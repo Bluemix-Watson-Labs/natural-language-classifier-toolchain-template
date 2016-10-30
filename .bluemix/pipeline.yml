@@ -37,7 +37,8 @@ stages:
       # Push app
       export CF_APP_NAME="$CF_APP"
       cf create-service natural_language_classifier standard natural-language-classifier-standard
-      cf push "${CF_APP_NAME}" -n "${CF_APP_NAME}-${CF_ORG%%@*}-$(date +%Y%m%d%H%M%S)"
+      CF_ORG_SANITIZED=${CF_ORG//[![:alnum:]]}
+      cf push "${CF_APP_NAME}" -n "${CF_APP_NAME}-${CF_ORG_SANITIZED}-$(date +%Y%m%d%H%M%S)"
       export APP_URL=http://$(cf app $CF_APP_NAME | grep urls: | awk '{print $2}')
       # View logs
       #cf logs "${CF_APP_NAME}" --recent
