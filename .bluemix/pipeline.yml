@@ -36,7 +36,9 @@ stages:
       #!/bin/bash
       # Push app
       export CF_APP_NAME="$CF_APP"
-      cf create-service natural_language_classifier standard natural-language-classifier-standard
+      cf create-service natural_language_classifier standard my-nlc-service
+      cf create-service-key my-nlc-service myKey
+      cf service-key my-nlc-service myKey
       CF_ORG_SANITIZED=${CF_ORG//[![:alnum:]]}
       cf push "${CF_APP_NAME}" -n "${CF_APP_NAME}-${CF_ORG_SANITIZED}"
       export APP_URL=http://$(cf app $CF_APP_NAME | grep urls: | awk '{print $2}')
